@@ -1,0 +1,28 @@
+spring:
+  devtools:
+    restart:
+      enabled: true
+  datasource:
+    url: jdbc:mysql://114.116.19.236:3306/db_suqb_test
+    username: root
+    password: 123456
+server:
+  port: 8080
+sa-token:
+  # token/cookie名称
+  token-name: satoken
+  # token有效期 s 默认30天 -1永不过期
+  timeout: 604800
+  # 无操作过期时间
+  activity-timeout: -1
+  # 并发登录
+  is-concurrent: true
+  # 并发登录时是否公用token
+  is-share: true
+  # token风格
+  token-style: uuid
+  #是否输出操作日志
+  is-log: true
+logging:
+  level:
+    com.suqb.satoken.mapper: debug

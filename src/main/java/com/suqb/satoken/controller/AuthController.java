@@ -1,5 +1,6 @@
 package com.suqb.satoken.controller;
 
+import cn.dev33.satoken.stp.SaLoginModel;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.dev33.satoken.util.SaResult;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -38,7 +39,7 @@ public class AuthController {
 
         log.info("用户信息：{}", thisUser);
 
-        if (ObjectUtils.isNotEmpty(this.userService)) {
+        if (ObjectUtils.isNotEmpty(thisUser)) {
             StpUtil.login(thisUser.getId());
             System.out.println("=====================================");
             System.out.println(StpUtil.getPermissionList());
@@ -71,6 +72,22 @@ public class AuthController {
     @RequestMapping("/per.do")
     public SaResult per() {
         StpUtil.logout();
+        return SaResult.ok();
+    }
+
+    /**
+     * 记住我模式
+     */
+    @PostMapping("/remember-me")
+    private SaResult rememberMe(@RequestBody TUserEntity user) {
+        StpUtil.login(user.getId(), new SaLoginModel()
+                .setTimeout(60 * 60 * 24 * 7)
+                .setDevice("PC")
+                .setIsLastingCookie(true)
+                .setToken("www.www.www")
+                .setIsWriteHeader(false)
+        );
+
         return SaResult.ok();
     }
 }

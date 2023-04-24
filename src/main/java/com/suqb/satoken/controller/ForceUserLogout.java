@@ -3,6 +3,7 @@ package com.suqb.satoken.controller;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.dev33.satoken.util.SaResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -36,5 +37,14 @@ public class ForceUserLogout {
     public SaResult forceUserLogoutByIdAndDevice(Long id, String device) {
         StpUtil.kickout(id, device);
         return SaResult.ok(String.format("成功下线%s端用户%s", device, id));
+    }
+
+    /**
+     * 封禁账号
+     */
+    @GetMapping("/disable/{id}")
+    public SaResult disable(@PathVariable int id) {
+        StpUtil.disable(id, 86400);
+        return SaResult.ok("id为" + id + "的用户已经被封禁一天");
     }
 }

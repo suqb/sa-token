@@ -6,6 +6,19 @@ spring:
     url: jdbc:mysql://114.116.19.236:3306/db_suqb_test
     username: root
     password: 123456
+  # 当引入redis依赖配置数据库信息后sa-token会自动将session信息保存的数据库防止丢失，无需任何配置
+  redis:
+    database: 1
+    host: 114.116.19.236
+    port: 6380
+    timeout: 10s
+    password: 123456
+    lettuce:
+      pool:
+        max-active: 200
+        max-wait: -1ms
+        max-idle: 10
+        min-idle: 0
 server:
   port: 8080
 sa-token:
@@ -19,10 +32,12 @@ sa-token:
   is-concurrent: true
   # 并发登录时是否公用token
   is-share: true
-  # token风格
+  # token风格 可选：uuid simple-uuid random-32 random-64 random-128 tik 也可以自定义重写SaStrategy策略类算法
   token-style: uuid
   #是否输出操作日志
   is-log: true
+  # 在某些系统中，前端提交token时会在前面加个固定的前缀,此时后端如果不做任何特殊处理，框架将会把Bearer 视为token的一部分，无法正常读取token信息，导致鉴权失败
+  token-prefix:
 logging:
   level:
     com.suqb.satoken.mapper: debug
